@@ -88,3 +88,6 @@ coverage.xml
 # Logs
 *.log
 logs/
+
+# Go build output
+a2a-transport/bin/
