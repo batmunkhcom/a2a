@@ -7,7 +7,7 @@
 ```dockerfile
 FROM python:3.11-slim
 
-RUN pip install a2a-protocol
+RUN pip install batmunkh-a2a
 
 COPY a2a.yaml /etc/a2a/a2a.yaml
 COPY plugins/ /opt/a2a/plugins/
@@ -27,7 +27,7 @@ docker run -p 50051:50051 -p 8080:8080 a2a-mesh
 ```dockerfile
 # Stage 1: Build
 FROM python:3.11-slim AS builder
-RUN pip install --user a2a-protocol[ml]
+RUN pip install --user batmunkh-a2a[ml]
 
 # Stage 2: Runtime
 FROM nvidia/cuda:12.1-runtime-ubuntu22.04

@@ -7,7 +7,7 @@ bypassing text serialization and achieving 10–100× lower latency and richer s
 transfer compared to traditional text-based APIs.
 
 ```bash
-pip install a2a-protocol
+pip install batmunkh-a2a
 a2a serve --config a2a.yaml
 ```
 
@@ -18,9 +18,9 @@ a2a serve --config a2a.yaml
 ### 1. Install
 
 ```bash
-pip install a2a-protocol
+pip install batmunkh-a2a
 # With ML extras (GPU, torch):
-pip install "a2a-protocol[ml]"
+pip install "batmunkh-a2a[ml]"
 ```
 
 ### 2. Create `a2a.yaml`
