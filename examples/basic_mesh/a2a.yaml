@@ -1,0 +1,23 @@
+version: "0.1"
+mesh_id: "basic-mesh"
+
+models:
+  base:
+    name: "demo-model"
+    family: "demo"
+    dtype: "fp32"
+    hidden_dim: 768
+
+plugins:
+  repeater:
+    module: plugins.repeater
+    agent_id: repeater
+    model: base
+  inverter:
+    module: plugins.inverter
+    agent_id: inverter
+    model: base
+
+routes:
+  - from: {agent_id: repeater, label: hidden_state}
+    to: {agent_id: inverter, label: hidden_state}

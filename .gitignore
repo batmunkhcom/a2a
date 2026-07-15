@@ -58,9 +58,6 @@ pretrained/
 projections/
 *.registry.yaml
 
-# Internal planning documents
-docs/
-
 # OS
 .DS_Store
 Thumbs.db

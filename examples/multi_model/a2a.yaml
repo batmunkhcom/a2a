@@ -1,0 +1,38 @@
+version: "0.1"
+mesh_id: "multi-model-mesh"
+
+models:
+  model-a:
+    name: "source-model"
+    family: "llama"
+    dtype: "fp32"
+    hidden_dim: 768
+  model-b:
+    name: "target-model"
+    family: "mistral"
+    dtype: "fp32"
+    hidden_dim: 1024
+    projection:
+      variant: "b"
+      hidden_size: 512
+
+plugins:
+  summarizer:
+    module: plugins.summarizer
+    agent_id: summarizer
+    model: model-a
+  normalizer:
+    module: plugins.normalizer
+    agent_id: normalizer
+    model: model-b
+  mixer:
+    module: plugins.mixer
+    agent_id: mixer
+    model: model-b
+
+routes:
+  - from: {agent_id: summarizer, label: hidden_state}
+    to: {agent_id: normalizer, label: hidden_state}
+    projection: true
+  - from: {agent_id: normalizer, label: hidden_state}
+    to: {agent_id: mixer, label: hidden_state}
