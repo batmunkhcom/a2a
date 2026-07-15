@@ -1,5 +1,4 @@
-"""JWT authentication stub — populated in Sprint 5."""
+from a2a.security.auth import JWTError, create_token, validate_token
+from a2a.security.tls import TlsConfig
 
-
-def placeholder() -> None:
-    pass
+__all__ = ["create_token", "validate_token", "JWTError", "TlsConfig"]

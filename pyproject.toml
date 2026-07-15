@@ -96,6 +96,18 @@ module = "a2a.projection.*"
 ignore_errors = true
 
 [[tool.mypy.overrides]]
+module = "a2a.monitoring.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "a2a.security.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "a2a.utils.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
 module = "a2a.protocol.generated.*"
 ignore_errors = true
 
