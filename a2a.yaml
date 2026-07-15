@@ -1,0 +1,152 @@
+# =============================================================================
+# A2A Protocol — Single Source of Truth Configuration
+# =============================================================================
+
+version: "1.0"
+
+# ── Runtime ─────────────────────────────────────────────────────
+runtime:
+  agent_id: "node-01"
+  log_level: "info"
+  log_format: "json"
+  metrics_port: 9091
+  default_dtype: "float16"
+  default_layer: -1
+  compression: "none"
+  max_sequence_length: 4096
+  session_ttl_seconds: 300
+  max_concurrent_sessions: 100
+
+# ── Models (shared — defined once, referenced by name) ─────────
+models:
+  deepseek:
+    provider: "openai"
+    model_id: "deepseek-chat"
+    api_key_env: "DEEPSEEK_API_KEY"
+    api_base: "https://api.deepseek.com/v1"
+    max_tokens: 65536
+    dtype: "float16"
+
+  llama-8b:
+    provider: "huggingface"
+    model_id: "meta-llama/Llama-3.1-8B-Instruct"
+    device: "cuda:0"
+    dtype: "float16"
+    load_in_8bit: false
+    hf_token_env: "HF_TOKEN"
+    max_tokens: 4096
+
+  mistral-7b:
+    provider: "ollama"
+    model_id: "mistral:7b-instruct"
+    device: "cpu"
+    dtype: "float16"
+    max_tokens: 32768
+    api_base: "http://localhost:11434"
+
+  gpt-4o:
+    provider: "openai"
+    model_id: "gpt-4o"
+    api_key_env: "OPENAI_API_KEY"
+    max_tokens: 128000
+
+# ── Transport ───────────────────────────────────────────────────
+transport:
+  protocol: "grpc"
+  host: "0.0.0.0"
+  port: 9090
+  max_message_size_mb: 64
+  serialization_format: "flatbuffers"
+  zero_copy: true
+  tls_enabled: false
+
+# ── Discovery ───────────────────────────────────────────────────
+discovery:
+  mechanism: "static"
+  static_peers:
+    - id: "node-02"
+      address: "192.168.1.10:9090"
+
+# ── Projection ──────────────────────────────────────────────────
+projection:
+  auto_train:
+    enabled: true
+    min_pairs: 1000
+    epochs: 50
+    learning_rate: 0.001
+    dataset_source: "file"
+    dataset_path: "./projection_corpus.txt"
+  pretrained:
+    llama-8b__mistral-7b: "./projections/llama-8b_to_mistral-7b.safetensors"
+  architecture:
+    variant: "b"
+    hidden_dim: 2048
+    dropout: 0.1
+
+# ── Plugins ─────────────────────────────────────────────────────
+plugins:
+  log-reader:
+    enabled: true
+    module: "a2a.plugins.log_reader.plugin"
+    class_name: "LogReaderPlugin"
+    model: "llama-8b"
+    priority: 10
+
+  code-fixer:
+    enabled: true
+    module: "a2a.plugins.code_fixer.plugin"
+    class_name: "CodeFixerPlugin"
+    model: "llama-8b"
+    priority: 10
+
+  security-analyzer:
+    enabled: false
+    module: "a2a.plugins.security_analyzer"
+    class_name: "SecurityAnalyzerPlugin"
+    model: "mistral-7b"
+    priority: 5
+
+# ── Semantic Routes ─────────────────────────────────────────────
+routes:
+  error_context:
+    - "code-fixer"
+    - "security-analyzer"
+  code_patch:
+    - "security-analyzer"
+  log_summary:
+    - "security-analyzer"
+
+# ── Security ────────────────────────────────────────────────────
+security:
+  tls_enabled: false
+  auth_mechanism: "none"
+  jwt_secret_env: "A2A_JWT_SECRET"
+  token_expiry_minutes: 60
+  default_role: "agent"
+  mesh_id: "default"
+  allow_cross_mesh: false
+  check_nan: true
+  check_inf: true
+  max_l2_norm: 1000.0
+  min_l2_norm: 0.001
+
+# ── Rate Limiting ───────────────────────────────────────────────
+rate_limit:
+  enabled: true
+  algorithm: "token_bucket"
+  default:
+    bucket_size: 20
+    refill_rate: 100.0
+  agents:
+    log-reader:
+      bucket_size: 50
+      refill_rate: 200.0
+    code-fixer:
+      bucket_size: 10
+      refill_rate: 50.0
+  routes:
+    error_context:
+      bucket_size: 30
+      refill_rate: 100.0
+  max_queue_depth: 500
+  backpressure_threshold: 0.8

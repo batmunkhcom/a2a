@@ -1,5 +1,7 @@
-"""Capability and ModelInfo dataclasses stub — populated in Sprint 3."""
+"""Capability and ModelInfo re-exports — convenience module."""
 
+from __future__ import annotations
 
-def placeholder() -> None:
-    pass
+from a2a.agent.base import Capability, ModelInfo, PluginEntry
+
+__all__ = ["Capability", "ModelInfo", "PluginEntry"]
