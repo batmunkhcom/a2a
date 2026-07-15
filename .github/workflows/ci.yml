@@ -53,3 +53,35 @@ jobs:
           python-version: "3.11"
       - run: pip install -e ".[dev]"
       - run: pytest tests/e2e/ -v --timeout=300
+
+  go-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+      - run: cd a2a-transport && go vet ./...
+
+  go-test:
+    needs: go-lint
+    strategy:
+      matrix:
+        go: ["1.23", "1.24"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+      - run: cd a2a-transport && go test ./... -v -cover
+
+  go-bench:
+    needs: go-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+      - run: cd a2a-transport && go test ./benchmark/ -bench=. -benchtime=1s

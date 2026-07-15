@@ -8,7 +8,7 @@
     <a href="https://github.com/batmunkhcom/a2a/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
     <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python" alt="Python"></a>
     <img src="https://img.shields.io/badge/Status-Alpha-yellow" alt="Status">
-    <img src="https://img.shields.io/badge/Version-0.1.0.dev0-lightgrey" alt="Version">
+    <img src="https://img.shields.io/badge/Version-0.1.0-blue" alt="Version">
   </p>
 </div>
 
