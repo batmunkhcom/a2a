@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+package a2a;
+
+// ──────────────────────────────────────────────────────────────
+// A2A Wire Protocol — message types
+// ──────────────────────────────────────────────────────────────
+
+enum MessageType {
+  MSG_UNICAST = 0;
+  MSG_MULTICAST = 1;
+  MSG_DISCOVER = 2;
+  MSG_CAPABILITY = 3;
+  MSG_PROJECT_REQ = 4;
+  MSG_PROJECT_RESP = 5;
+  MSG_PROJECT_AUTO = 6;
+  MSG_PROJECT_READY = 7;
+  MSG_KEEPALIVE = 8;
+  MSG_ACK = 9;
+  MSG_ERROR = 10;
+  MSG_BACKPRESSURE = 11;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Metadata attached to every tensor transfer
+// ──────────────────────────────────────────────────────────────
+
+message TensorMetadata {
+  string source_model = 1;
+  string target_model = 2;
+  uint32 source_layer = 3;
+  uint32 target_layer = 4;
+  string tensor_dtype = 5;         // "float16", "bfloat16", "float32"
+  repeated uint32 tensor_shape = 6;
+  string semantic_label = 7;       // "error_context", "code_intent", etc.
+  float confidence = 8;            // 0.0 .. 1.0
+  uint64 timestamp = 9;
+  string session_id = 10;
+  string projection_id = 11;
+  bool requires_projection = 12;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Core RPC messages
+// ──────────────────────────────────────────────────────────────
+
+message TensorRequest {
+  TensorMetadata metadata = 1;
+  bytes tensor_data = 2;           // FlatBuffers-encoded tensor
+}
+
+message TensorResponse {
+  bool accepted = 1;
+  string error_message = 2;
+  uint32 error_code = 3;
+  TensorMetadata metadata = 4;
+  bytes tensor_data = 5;           // Optional response tensor
+}
+
+// ──────────────────────────────────────────────────────────────
+// Discovery
+// ──────────────────────────────────────────────────────────────
+
+message DiscoverRequest {
+  string agent_id = 1;
+  string mesh_id = 2;
+}
+
+message AgentInfo {
+  string agent_id = 1;
+  string address = 2;
+  repeated CapabilityInfo capabilities = 3;
+}
+
+message CapabilityInfo {
+  string name = 1;
+  string description = 2;
+  repeated string input_labels = 3;
+  repeated string output_labels = 4;
+  string model_id = 5;
+  uint32 hidden_dim = 6;
+  string dtype = 7;
+  int32 max_batch_size = 8;
+}
+
+message DiscoverResponse {
+  repeated AgentInfo agents = 1;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Projection
+// ──────────────────────────────────────────────────────────────
+
+message ProjectionRequest {
+  string source_model = 1;
+  string target_model = 2;
+  bytes corpus = 3;                // Shared text corpus for training
+}
+
+message ProjectionResponse {
+  bool accepted = 1;
+  string projection_id = 2;
+  string error_message = 3;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Health
+// ──────────────────────────────────────────────────────────────
+
+message HealthRequest {}
+
+message HealthResponse {
+  string status = 1;               // "ok" | "degraded" | "unhealthy"
+  uint64 uptime_seconds = 2;
+  string version = 3;
+  uint32 plugins_loaded = 4;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Backpressure / Flow Control
+// ──────────────────────────────────────────────────────────────
+
+enum BackpressureStatus {
+  SLOW_DOWN = 0;
+  PAUSE = 1;
+  RESUME = 2;
+}
+
+message BackpressureSignal {
+  string agent_id = 1;
+  uint32 queue_depth = 2;
+  BackpressureStatus status = 3;
+  uint32 suggested_rate = 4;       // Tensors per second
+}
+
+// ──────────────────────────────────────────────────────────────
+// gRPC Service
+// ──────────────────────────────────────────────────────────────
+
+service A2AService {
+  // Send a single tensor
+  rpc SendTensor(TensorRequest) returns (TensorResponse);
+
+  // Bidirectional tensor streaming
+  rpc StreamTensors(stream TensorRequest) returns (stream TensorResponse);
+
+  // Discover agents on the network
+  rpc Discover(DiscoverRequest) returns (DiscoverResponse);
+
+  // Request projection model training
+  rpc RequestProjection(ProjectionRequest) returns (ProjectionResponse);
+
+  // Health check
+  rpc HealthCheck(HealthRequest) returns (HealthResponse);
+}

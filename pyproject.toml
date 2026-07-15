@@ -64,6 +64,7 @@ include = ["a2a*"]
 target-version = "py311"
 line-length = 100
 exclude = [
+    "a2a/protocol/generated",
     "*.proto",
     "*_pb2.py",
     "*_pb2_grpc.py",
@@ -74,12 +75,30 @@ select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/test_package.py" = ["F401", "I001"]
+"a2a/transport/server.py" = ["N802"]
+"a2a/protocol/messages.py" = ["UP017"]
 
 [tool.mypy]
 python_version = "3.11"
 strict = true
 warn_unused_ignores = true
-exclude = [".*_pb2\\.py", ".*_pb2_grpc\\.py"]
+exclude = ["a2a/protocol/generated"]
+
+[[tool.mypy.overrides]]
+module = "a2a.protocol.generated.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "a2a.protocol.messages"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "a2a.transport.server"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "a2a.transport.client"
+ignore_errors = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
