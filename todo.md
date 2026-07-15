@@ -1,137 +1,137 @@
-# A2A Protocol — Хөгжүүлэлтийн Ажлын Төлөвлөгөө
+# A2A Protocol — Development Task Plan
 
-> **Төсөл:** A2A Protocol — AI-to-AI Latent Space Communication
-> **Хувилбар:** 0.1.0.dev0 → 0.1.0
-> **Нийт хугацаа:** 22 долоо хоног (~110 ажлын өдөр)
-> **Хэл:** Python 3.11+
+> **Project:** A2A Protocol — AI-to-AI Latent Space Communication
+> **Version:** 0.1.0.dev0 → 0.1.0
+> **Total Duration:** 22 weeks (~110 working days)
+> **Language:** Python 3.11+
 > **License:** Apache 2.0
 
 ---
 
-## Төслийн Тойм
+## Project Overview
 
-AI agent-ууд хоорондоо текст биш, **latent space дахь шууд вектор**-оор харилцах протокол. Tokenization болон текст парсинг-ийн overhead-г бүрэн арилгаж, харилцааны хурдыг **6.5x** нэмэгдүүлнэ.
+A2A Protocol enables AI agents to communicate via **direct latent space vectors** instead of text. By eliminating tokenization and text parsing overhead, communication speed increases **6.5x**.
 
-| Үзүүлэлт | Одоогийн (Text API) | A2A Protocol |
+| Metric | Current (Text API) | A2A Protocol |
 |---|---|---|
-| Хурд | ~1400ms | ~215ms |
-| Bandwidth | ~2-4KB текст | 8KB тензор |
-| Token | 700 токен | 0 токен |
+| Latency | ~1400ms | ~215ms |
+| Bandwidth | ~2-4KB text | 8KB tensor |
+| Tokens | ~700 tokens | 0 tokens |
 
 ---
 
-## Агуулга
+## Table of Contents
 
 1. [Sprint 0 — Project Setup & Scaffolding](#sprint-0--project-setup--scaffolding)
 2. [Sprint 1 — Wire Protocol + Transport Layer](#sprint-1--wire-protocol--transport-layer)
 3. [Sprint 2 — Tensor Engine](#sprint-2--tensor-engine)
 4. [Sprint 3 — Plugin System + Core Runtime](#sprint-3--plugin-system--core-runtime)
 5. [Sprint 4 — Projection Model + Auto-training](#sprint-4--projection-model--auto-training)
-6. [Sprint 5 — Security, Rate Limit, Monitoring](#sprint-5--security-rate-limit-monitoring)
+6. [Sprint 5 — Security, Rate Limiting, Monitoring](#sprint-5--security-rate-limiting-monitoring)
 7. [Sprint 6 — Documentation, Integration, Release](#sprint-6--documentation-integration-release)
-8. [Sprint 7+ — Go Transport Layer (2-р үе)](#sprint-7--go-transport-layer-2-р-үе)
-9. [MVP Тодорхойлолт](#mvp-тодорхойлолт)
+8. [Sprint 7+ — Go Transport Layer (Phase 2)](#sprint-7--go-transport-layer-phase-2)
+9. [MVP Definition](#mvp-definition)
 
 ---
 
 ## Sprint 0 — Project Setup & Scaffolding
 
-**Хугацаа:** 2 долоо хоног (10 өдөр)
-**Зорилго:** `pip install -e ".[dev]" ; a2a --help` ажилладаг skeleton бэлэн
+**Duration:** 2 weeks (10 days)
+**Goal:** Runnable skeleton — `pip install -e ".[dev]" ; a2a --help` works
 
 ### Tasks
 
-- [x] **S0-T1** — Repository үүсгэх, pyproject.toml тохируулах  `# 1 өдөр`
-  - Файлууд: `pyproject.toml`, `.gitignore`, `requirements.txt`, `requirements-dev.txt`
-  - **AC:** `pip install -e ".[dev]"` амжилттай, `import a2a` алдаагүй
+- [x] **S0-T1** — Initialize repository, configure pyproject.toml  `# 1 day`
+  - Files: `pyproject.toml`, `.gitignore`, `requirements.txt`, `requirements-dev.txt`
+  - **AC:** `pip install -e ".[dev]"` succeeds, `import a2a` works
 
-- [ ] **S0-T2** — CI/CD pipeline (GitHub Actions)  `# 1 өдөр`
-  - Файлууд: `.github/workflows/ci.yml`
-  - **AC:** Push хийхэд lint + test workflow асах
+- [ ] **S0-T2** — CI/CD pipeline (GitHub Actions)  `# 1 day`
+  - Files: `.github/workflows/ci.yml`
+  - **AC:** Push triggers lint + test workflow
 
-- [ ] **S0-T3** — Pre-commit hooks (ruff + mypy)  `# 0.5 өдөр`
-  - Файлууд: `.pre-commit-config.yaml`
-  - **AC:** `pre-commit run --all-files` амжилттай
+- [ ] **S0-T3** — Pre-commit hooks (ruff + mypy)  `# 0.5 day`
+  - Files: `.pre-commit-config.yaml`
+  - **AC:** `pre-commit run --all-files` passes
 
-- [ ] **S0-T4** — Package skeleton (бүх `__init__.py`, `_version.py`)  `# 1 өдөр`
-  - Файлууд: `a2a/__init__.py`, `a2a/_version.py`, бүх дэд пакежийн `__init__.py`
-  - **AC:** Бүх `__init__.py` байх, `from a2a.config import ...` ажиллах
+- [ ] **S0-T4** — Package skeleton (all `__init__.py`, `_version.py`)  `# 1 day`
+  - Files: `a2a/__init__.py`, `a2a/_version.py`, all subpackage `__init__.py`
+  - **AC:** All `__init__.py` present, `from a2a.config import ...` works
 
-- [ ] **S0-T5** — CLI skeleton (typer) + entry point  `# 1 өдөр`
-  - Файлууд: `a2a/cli.py`
+- [ ] **S0-T5** — CLI skeleton (typer) + entry point  `# 1 day`
+  - Files: `a2a/cli.py`
   - **AC:** `a2a --help`, `a2a serve --help`, `a2a discover --help`, `a2a config --help`
 
-- [ ] **S0-T6** — README.md + developer guide бичих  `# 0.5 өдөр`
-  - Файл: `README.md`
-  - **AC:** Шинэ хүн README уншихад project-г асааж чадах
+- [ ] **S0-T6** — README.md + developer guide  `# 0.5 day`
+  - File: `README.md`
+  - **AC:** Newcomer can run the project by following README
 
-- [ ] **S0-T7** — Dockerfile skeleton  `# 0.5 өдөр`
-  - Файлууд: `Dockerfile`, `.dockerignore`
-  - **AC:** `docker build .` амжилттай
+- [ ] **S0-T7** — Dockerfile skeleton  `# 0.5 day`
+  - Files: `Dockerfile`, `.dockerignore`
+  - **AC:** `docker build .` succeeds
 
-### S0 Тестүүд (5)
+### S0 Tests (5)
 
 - [ ] `test_package.py` — `import a2a` works, version string present
 - [ ] `test_cli.py` — CLI help prints without error
-- [ ] `test_cli.py` — `a2a serve` prints "Starting..." stub
+- [ ] `test_cli.py` — `a2a serve` prints stub message
 - [ ] `test_cli.py` — `a2a config validate` prints stub
 - [ ] `test_package.py` — All subpackage imports work
 
-### S0 Package Skeleton Бүтэц
+### S0 Package Skeleton Structure
 
 ```
 a2a/
 ├── __init__.py              → __version__, public API exports
 ├── _version.py              → __version__ = "0.1.0.dev0"
 ├── cli.py                   → typer app (serve, discover, config, train, benchmark)
-├── config/                  → A2AConfig, loader, defaults (S3 бөглөнө)
+├── config/                  → A2AConfig, loader, defaults (filled in S3)
 │   ├── __init__.py
 │   ├── schema.py            → stub
 │   ├── loader.py            → stub
 │   └── defaults.py          → stub
-├── transport/               → gRPC server/client, codec, discovery (S1 бөглөнө)
+├── transport/               → gRPC server/client, codec, discovery (filled in S1)
 │   ├── __init__.py
 │   ├── server.py            → stub
 │   ├── client.py            → stub
 │   ├── codec.py             → stub
 │   └── discovery.py         → stub
-├── tensor/                  → Extractor, injector, serializer, dtype (S2 бөглөнө)
+├── tensor/                  → Extractor, injector, serializer, dtype (filled in S2)
 │   ├── __init__.py
 │   ├── extractor.py         → stub
 │   ├── injector.py          → stub
 │   ├── serializer.py        → stub
 │   └── dtype.py             → stub
-├── projection/              → Adapter, trainer, dataset, registry (S4 бөглөнө)
+├── projection/              → Adapter, trainer, dataset, registry (filled in S4)
 │   ├── __init__.py
 │   ├── adapter.py           → stub
 │   ├── trainer.py           → stub
 │   ├── dataset.py           → stub
 │   ├── auto_trainer.py      → stub
 │   └── registry.py          → stub
-├── agent/                   → BasePlugin, PluginManager, router (S3 бөглөнө)
+├── agent/                   → BasePlugin, PluginManager, router (filled in S3)
 │   ├── __init__.py
 │   ├── base.py              → stub
 │   ├── manager.py           → stub
 │   ├── router.py            → stub
 │   └── capabilities.py      → stub
-├── protocol/                → Protobuf, messages, errors (S1 бөглөнө)
+├── protocol/                → Protobuf, messages, errors (filled in S1)
 │   ├── __init__.py
 │   ├── messages.py          → stub
 │   ├── a2a.proto            → stub
 │   └── errors.py            → stub
-├── security/                → Auth, TLS (S5 бөглөнө)
+├── security/                → Auth, TLS (filled in S5)
 │   ├── __init__.py
 │   ├── auth.py              → stub
 │   └── tls.py               → stub
-├── monitoring/              → Metrics, rate limiter (S5 бөглөнө)
+├── monitoring/              → Metrics, rate limiter (filled in S5)
 │   ├── __init__.py
 │   ├── metrics.py           → stub
 │   └── rate_limiter.py      → stub
-├── plugins/                 → Built-in plugins (S3 бөглөнө)
+├── plugins/                 → Built-in plugins (filled in S3)
 │   ├── __init__.py
 │   ├── log_reader/          → stub
 │   └── code_fixer/          → stub
-└── utils/                   → Logging, async helpers (S3, S5 бөглөнө)
+└── utils/                   → Logging, async helpers (filled in S3, S5)
     ├── __init__.py
     ├── logging.py           → stub
     └── async_utils.py       → stub
@@ -141,50 +141,50 @@ a2a/
 
 ## Sprint 1 — Wire Protocol + Transport Layer
 
-**Хугацаа:** 3 долоо хоног (15 өдөр)
-**Зорилго:** gRPC-ээр хоёр процесс хооронд тензор дамжуулдаг болох
+**Duration:** 3 weeks (15 days)
+**Goal:** Two processes communicate via gRPC, exchanging tensors
 
 ### Tasks
 
-- [ ] **S1-T1** — Protobuf schema бичих (`a2a.proto`)  `# 1 өдөр`
-  - Файл: `a2a/protocol/a2a.proto`
-  - **AC:** `protoc` compile амжилттай, `a2a_pb2.py` + `a2a_pb2_grpc.py` үүснэ
-  - Агуулга: TensorRequest, TensorResponse, A2AMetadata, Discover, Health, бүх RPCs
+- [ ] **S1-T1** — Write Protobuf schema (`a2a.proto`)  `# 1 day`
+  - File: `a2a/protocol/a2a.proto`
+  - **AC:** `protoc` compiles successfully, `a2a_pb2.py` + `a2a_pb2_grpc.py` generated
+  - Content: TensorRequest, TensorResponse, A2AMetadata, Discover, Health, all RPCs
 
-- [ ] **S1-T2** — Protobuf кодогенерац setup + Makefile комманд  `# 0.5 өдөр`
-  - Файл: `Makefile` (proto target)
-  - **AC:** `make proto` → generate, CI pipeline-д proto drift check
+- [ ] **S1-T2** — Protobuf codegen setup + Makefile target  `# 0.5 day`
+  - File: `Makefile` (proto target)
+  - **AC:** `make proto` → generate, CI pipeline has proto drift check
 
-- [ ] **S1-T3** — FlatBuffers tensor codec: `encode_tensor()`  `# 1 өдөр`
-  - Файл: `a2a/transport/codec.py`
-  - **AC:** PyTorch tensor → bytes, shape + dtype хадгалагдана
+- [ ] **S1-T3** — FlatBuffers tensor codec: `encode_tensor()`  `# 1 day`
+  - File: `a2a/transport/codec.py`
+  - **AC:** PyTorch tensor → bytes, shape + dtype preserved
 
-- [ ] **S1-T4** — FlatBuffers tensor codec: `decode_tensor()`  `# 1 өдөр`
-  - Файл: `a2a/transport/codec.py`
-  - **AC:** bytes → PyTorch tensor, roundtrip алдаагүй (FP32, FP16, BF16, multi-dim)
+- [ ] **S1-T4** — FlatBuffers tensor codec: `decode_tensor()`  `# 1 day`
+  - File: `a2a/transport/codec.py`
+  - **AC:** bytes → PyTorch tensor, roundtrip error-free (FP32, FP16, BF16, multi-dim)
 
-- [ ] **S1-T5** — `codec.py` — edge cases: хоосон tensor, NaN/Inf, batch dim  `# 0.5 өдөр`
-  - **AC:** Хоосон tensor → алдаа, NaN → алдаа (validate mode), batch дэмжинэ
+- [ ] **S1-T5** — `codec.py` — edge cases: empty tensor, NaN/Inf, batch dim  `# 0.5 day`
+  - **AC:** Empty tensor → error, NaN → error (validate mode), batch supported
 
-- [ ] **S1-T6** — gRPC server: `A2AServicer` (SendTensor, HealthCheck)  `# 1.5 өдөр`
-  - Файл: `a2a/transport/server.py`
-  - **AC:** Сервер асахад port сонсоно, health check ажиллана
+- [ ] **S1-T6** — gRPC server: `A2AServicer` (SendTensor, HealthCheck)  `# 1.5 days`
+  - File: `a2a/transport/server.py`
+  - **AC:** Server starts listening, health check works
 
-- [ ] **S1-T7** — gRPC server: `StreamTensors` (bidirectional stream)  `# 1 өдөр`
-  - **AC:** Олон тензор дараалан илгээх, сервер бүгдийг хүлээж авах
+- [ ] **S1-T7** — gRPC server: `StreamTensors` (bidirectional stream)  `# 1 day`
+  - **AC:** Multiple tensors streamed sequentially, server receives all
 
-- [ ] **S1-T8** — gRPC client: `A2AClient` (SendTensor, HealthCheck)  `# 1 өдөр`
-  - Файл: `a2a/transport/client.py`
-  - **AC:** Клиентээс тензор илгээхэд сервер хүлээж авна, accepted=true
+- [ ] **S1-T8** — gRPC client: `A2AClient` (SendTensor, HealthCheck)  `# 1 day`
+  - File: `a2a/transport/client.py`
+  - **AC:** Client sends tensor, server receives, accepted=true
 
-- [ ] **S1-T9** — gRPC integration test: send-receive roundtrip  `# 1 өдөр`
-  - **AC:** Сервер+клиент нэг процесс дотор асах, тензор илгээгдэж буцаж ирнэ
+- [ ] **S1-T9** — gRPC integration test: send-receive roundtrip  `# 1 day`
+  - **AC:** Server+client in same process, tensor sent and received
 
-- [ ] **S1-T10** — Error handling: `MSG_ERROR` + error propagation  `# 1 өдөр`
-  - Файл: `a2a/protocol/errors.py`
-  - **AC:** Буруу dtype → error_code=101, тензоргүй → error, details дамжина
+- [ ] **S1-T10** — Error handling: `MSG_ERROR` + error propagation  `# 1 day`
+  - File: `a2a/protocol/errors.py`
+  - **AC:** Invalid dtype → error_code=101, missing tensor → error, details propagated
 
-### S1 Тестүүд (17)
+### S1 Tests (17)
 
 - [ ] `test_encode_fp32_tensor`
 - [ ] `test_encode_fp16_tensor`
@@ -208,41 +208,41 @@ a2a/
 
 ## Sprint 2 — Tensor Engine
 
-**Хугацаа:** 4 долоо хоног (20 өдөр)
-**Зорилго:** HuggingFace model-ийн hidden state гаргаж, өөр model-д залгаж, generate хийх
-**Test Model:** `sshleifer/tiny-gpt2` (69MB, CPU дээр хурдан)
+**Duration:** 4 weeks (20 days)
+**Goal:** Extract hidden states from HuggingFace models, inject into target models, generate
+**Test Model:** `sshleifer/tiny-gpt2` (69MB, fast on CPU)
 
 ### Tasks
 
-- [ ] **S2-T1** — `TensorExtractor`: HF model hidden state extraction (register_forward_hook)  `# 2 өдөр`
-  - Файл: `a2a/tensor/extractor.py`
-  - **AC:** Текст өгөхөд (batch, seq, hidden_dim) shaped tensor гарна
+- [ ] **S2-T1** — `TensorExtractor`: HF model hidden state extraction (register_forward_hook)  `# 2 days`
+  - File: `a2a/tensor/extractor.py`
+  - **AC:** Input text → (batch, seq, hidden_dim) shaped tensor
 
-- [ ] **S2-T2** — `TensorExtractor`: pooling strategies (last, mean, max)  `# 1 өдөр`
-  - **AC:** pool="last" → (1, hidden), pool="mean" → (1, hidden), өөр утгатай
+- [ ] **S2-T2** — `TensorExtractor`: pooling strategies (last, mean, max)  `# 1 day`
+  - **AC:** pool="last" → (1, hidden), pool="mean" → (1, hidden), different values
 
-- [ ] **S2-T3** — `TensorExtractor`: layer selection (default -1, arbitrary layer)  `# 0.5 өдөр`
-  - **AC:** layer=0 → эхний давхарга, layer=-1 → сүүлийн
+- [ ] **S2-T3** — `TensorExtractor`: layer selection (default -1, arbitrary layer)  `# 0.5 day`
+  - **AC:** layer=0 → first layer, layer=-1 → last layer
 
-- [ ] **S2-T4** — `TensorInjector`: prefix injection (vector → embedding prefix → generate)  `# 2 өдөр`
-  - Файл: `a2a/tensor/injector.py`
-  - **AC:** Тензор + prompt → model.generate() → текст гарна, prompt-той холбоотой
+- [ ] **S2-T4** — `TensorInjector`: prefix injection (vector → embedding prefix → generate)  `# 2 days`
+  - File: `a2a/tensor/injector.py`
+  - **AC:** Tensor + prompt → model.generate() → text, output relates to prompt
 
-- [ ] **S2-T5** — `TensorInjector`: cross-attention injection хувилбар  `# 1.5 өдөр`
-  - **AC:** `inputs_embeds` биш, cross-attention key/value-р залгах
+- [ ] **S2-T5** — `TensorInjector`: cross-attention injection variant  `# 1.5 days`
+  - **AC:** Not `inputs_embeds`, but cross-attention key/value injection
 
-- [ ] **S2-T6** — `dtype.py`: FP32↔FP16↔BF16 хөрвүүлэлт + validate_tensor (NaN/Inf)  `# 0.5 өдөр`
-  - Файл: `a2a/tensor/dtype.py`
-  - **AC:** `convert_dtype(tensor, "float16")` → FP16, NaN илрүүлэлт зөв
+- [ ] **S2-T6** — `dtype.py`: FP32↔FP16↔BF16 conversion + validate_tensor (NaN/Inf)  `# 0.5 day`
+  - File: `a2a/tensor/dtype.py`
+  - **AC:** `convert_dtype(tensor, "float16")` → FP16, NaN detection correct
 
-- [ ] **S2-T7** — `serializer.py`: Safetensors save/load  `# 0.5 өдөр`
-  - Файл: `a2a/tensor/serializer.py`
+- [ ] **S2-T7** — `serializer.py`: Safetensors save/load  `# 0.5 day`
+  - File: `a2a/tensor/serializer.py`
   - **AC:** `save_to_bytes(tensor)` → bytes, `load_from_bytes(data)` → tensor, roundtrip
 
-- [ ] **S2-T8** — Integration test: extract → encode → decode → inject → generate  `# 2 өдөр`
-  - **AC:** Full pipeline, semantic consistency (output нь input-тай хамааралтай)
+- [ ] **S2-T8** — Integration test: extract → encode → decode → inject → generate  `# 2 days`
+  - **AC:** Full pipeline, semantic consistency (output relates to input)
 
-### S2 Тестүүд (17)
+### S2 Tests (17)
 
 - [ ] `test_extract_shape_last_pooling`
 - [ ] `test_extract_shape_mean_pooling`
@@ -266,60 +266,60 @@ a2a/
 
 ## Sprint 3 — Plugin System + Core Runtime
 
-**Хугацаа:** 4 долоо хоног (20 өдөр)
-**Зорилго:** `a2a serve` → 2 demo plugin ачаалж, тензороор харилцаж, код засвар гарах
+**Duration:** 4 weeks (20 days)
+**Goal:** `a2a serve` loads 2 demo plugins, they communicate via tensors, code fix is produced
 
 ### Tasks
 
-- [ ] **S3-T1** — `BasePlugin` abstract class бөглөх  `# 0.5 өдөр`
-  - Файл: `a2a/agent/base.py`
+- [ ] **S3-T1** — `BasePlugin` abstract class implementation  `# 0.5 day`
+  - File: `a2a/agent/base.py`
   - **AC:** plugin_id, plugin_name, version, listens_to, emits, get_capabilities, on_receive_tensor, extract_tensor, initialize, lifecycle hooks
 
-- [ ] **S3-T2** — `Capability` + `ModelInfo` dataclass  `# 0.5 өдөр`
-  - Файл: `a2a/agent/capabilities.py`
-  - **AC:** Plugin өөрийгөө тодорхойлох + сүлжээгээр зарлах
+- [ ] **S3-T2** — `Capability` + `ModelInfo` dataclass  `# 0.5 day`
+  - File: `a2a/agent/capabilities.py`
+  - **AC:** Plugin self-description + network announcement support
 
-- [ ] **S3-T3** — `PluginManager`: plugin loading (importlib + inspect)  `# 1 өдөр`
-  - Файл: `a2a/agent/manager.py`
-  - **AC:** `load_plugin(entry, global_config)` → plugin instance + initialize дуудагдана
+- [ ] **S3-T3** — `PluginManager`: plugin loading (importlib + inspect)  `# 1 day`
+  - File: `a2a/agent/manager.py`
+  - **AC:** `load_plugin(entry, global_config)` → plugin instance + initialize called
 
-- [ ] **S3-T4** — `PluginManager`: plugin registration + label routing  `# 0.5 өдөр`
-  - **AC:** `register(plugin)` → `listens_to()` label-ууд routing table-д нэмэгдэнэ
+- [ ] **S3-T4** — `PluginManager`: plugin registration + label routing  `# 0.5 day`
+  - **AC:** `register(plugin)` → `listens_to()` labels added to routing table
 
-- [ ] **S3-T5** — `PluginManager`: `route_tensor(tensor, metadata)`  `# 1 өдөр`
-  - Файл: `a2a/agent/router.py`
-  - **AC:** semantic_label → тохирох plugin(ууд) → `on_receive_tensor()` дуудагдана
+- [ ] **S3-T5** — `PluginManager`: `route_tensor(tensor, metadata)`  `# 1 day`
+  - File: `a2a/agent/router.py`
+  - **AC:** semantic_label → matching plugin(s) → `on_receive_tensor()` called
 
-- [ ] **S3-T6** — `PluginManager`: plugin-local config loading (`config.yaml`)  `# 0.5 өдөр`
-  - **AC:** Plugin-ийн сан доторх `config.yaml`-г уншиж `initialize()`-д дамжуулна
+- [ ] **S3-T6** — `PluginManager`: plugin-local config loading (`config.yaml`)  `# 0.5 day`
+  - **AC:** Plugin's `config.yaml` read and passed to `initialize()`
 
-- [ ] **S3-T7** — `A2AConfig` Pydantic model бөглөх  `# 1 өдөр`
-  - Файл: `a2a/config/schema.py`
-  - **AC:** `A2AConfig.from_yaml(path)` → validate хийгдсэн config объект
+- [ ] **S3-T7** — `A2AConfig` Pydantic model implementation  `# 1 day`
+  - File: `a2a/config/schema.py`
+  - **AC:** `A2AConfig.from_yaml(path)` → validated config object
 
-- [ ] **S3-T8** — Config loader: хайлтын дараалал, env override  `# 0.5 өдөр`
-  - Файл: `a2a/config/loader.py`
+- [ ] **S3-T8** — Config loader: search order, env override  `# 0.5 day`
+  - File: `a2a/config/loader.py`
   - **AC:** `A2A_CONFIG` env → `./a2a.yaml` → `~/.config/a2a/` → `/etc/a2a/`
 
-- [ ] **S3-T9** — `a2a.yaml` demo config бичих  `# 0.5 өдөр`
-  - **AC:** models, plugins, routes гэсэн 3 section-той demo config
+- [ ] **S3-T9** — Write demo `a2a.yaml` config  `# 0.5 day`
+  - **AC:** 3 sections present: models, plugins, routes
 
-- [ ] **S3-T10** — `A2ARuntime` orchestrator  `# 1 өдөр`
-  - Файл: `a2a/runtime.py`
-  - **AC:** `start()` → config унших → plugin ачаалах → transport эхлүүлэх
+- [ ] **S3-T10** — `A2ARuntime` orchestrator  `# 1 day`
+  - File: `a2a/runtime.py`
+  - **AC:** `start()` → load config → load plugins → start transport
 
-- [ ] **S3-T11** — `LogReaderPlugin` бөглөх  `# 1 өдөр`
-  - Файлууд: `a2a/plugins/log_reader/plugin.py`, `prompts.py`, `config.yaml`
-  - **AC:** Лог текст → `extract_tensor()` → error_context тензор гарна
+- [ ] **S3-T11** — `LogReaderPlugin` implementation  `# 1 day`
+  - Files: `a2a/plugins/log_reader/plugin.py`, `prompts.py`, `config.yaml`
+  - **AC:** Log text → `extract_tensor()` → error_context tensor
 
-- [ ] **S3-T12** — `CodeFixerPlugin` бөглөх  `# 1 өдөр`
-  - Файлууд: `a2a/plugins/code_fixer/plugin.py`, `prompts.py`, `config.yaml`
-  - **AC:** error_context тензор → `on_receive_tensor()` → inject → generate → код patch
+- [ ] **S3-T12** — `CodeFixerPlugin` implementation  `# 1 day`
+  - Files: `a2a/plugins/code_fixer/plugin.py`, `prompts.py`, `config.yaml`
+  - **AC:** error_context tensor → `on_receive_tensor()` → inject → generate → code patch
 
-- [ ] **S3-T13** — End-to-end integration test  `# 1 өдөр`
-  - **AC:** Runtime бүрэн ачаалагдаж, лог → код засвар flow амжилттай
+- [ ] **S3-T13** — End-to-end integration test  `# 1 day`
+  - **AC:** Runtime fully loads, log → code fix flow succeeds
 
-### S3 Тестүүд (19)
+### S3 Tests (19)
 
 - [ ] Plugin subclass with all abstract methods
 - [ ] PluginManager.register() → label routes populated
@@ -345,51 +345,51 @@ a2a/
 
 ## Sprint 4 — Projection Model + Auto-training
 
-**Хугацаа:** 4 долоо хоног (20 өдөр)
-**Зорилго:** Llama ↔ Mistral хоёр өөр модель тензороор харилцах
+**Duration:** 4 weeks (20 days)
+**Goal:** Two different models (Llama ↔ Mistral) communicate via tensors
 
 ### Tasks
 
-- [ ] **S4-T1** — `ProjectionModel` (3-layer MLP + Residual + LayerNorm)  `# 1 өдөр`
-  - Файл: `a2a/projection/adapter.py`
-  - **AC:** `forward(src_tensor)` → (target_dim,) shape зөв
+- [ ] **S4-T1** — `ProjectionModel` (3-layer MLP + Residual + LayerNorm)  `# 1 day`
+  - File: `a2a/projection/adapter.py`
+  - **AC:** `forward(src_tensor)` → (target_dim,) correct shape
 
-- [ ] **S4-T2** — `ProjectionModel` variant A (Linear)  `# 0.5 өдөр`
-  - **AC:** dims ижил үед identity, ялгаатай үед шугаман mapping
+- [ ] **S4-T2** — `ProjectionModel` variant A (Linear)  `# 0.5 day`
+  - **AC:** Same dims → identity, different dims → linear mapping
 
-- [ ] **S4-T3** — `ProjectionTrainer`: contrastive loss (InfoNCE)  `# 1.5 өдөр`
-  - Файл: `a2a/projection/trainer.py`
-  - **AC:** Training loop → loss буурна, cosine similarity өснө
+- [ ] **S4-T3** — `ProjectionTrainer`: contrastive loss (InfoNCE)  `# 1.5 days`
+  - File: `a2a/projection/trainer.py`
+  - **AC:** Training loop → loss decreases, cosine similarity increases
 
-- [ ] **S4-T4** — `ProjectionTrainer`: multi-objective loss (MSE + Cosine + Contrastive)  `# 0.5 өдөр`
-  - **AC:** Гурван loss бүрэлдэхүүн, weighted sum зөв
+- [ ] **S4-T4** — `ProjectionTrainer`: multi-objective loss (MSE + Cosine + Contrastive)  `# 0.5 day`
+  - **AC:** Three loss components, weighted sum correct
   - `loss = contrastive_loss + 0.1 * mse_loss + 0.01 * cosine_loss`
 
-- [ ] **S4-T5** — `ProjectionPairDataset`: корпус → (src_hidden, tgt_hidden) хосууд  `# 2 өдөр`
-  - Файл: `a2a/projection/dataset.py`
-  - **AC:** Текст мөр бүрээс хоёр model-ийн hidden state гаргаж хос үүсгэнэ
+- [ ] **S4-T5** — `ProjectionPairDataset`: corpus → (src_hidden, tgt_hidden) pairs  `# 2 days`
+  - File: `a2a/projection/dataset.py`
+  - **AC:** Each text line → hidden states from both models → paired
 
-- [ ] **S4-T6** — `ProjectionPairDataset`: negative pair generation  `# 0.5 өдөр`
-  - **AC:** Өөр өөр текстийн hidden state → negative pair
+- [ ] **S4-T6** — `ProjectionPairDataset`: negative pair generation  `# 0.5 day`
+  - **AC:** Different text hidden states → negative pair
 
-- [ ] **S4-T7** — `auto_trainer.py`: runtime auto-training trigger  `# 1.5 өдөр`
-  - Файл: `a2a/projection/auto_trainer.py`
-  - **AC:** Model pair auto-discovery → корпус унших → хос үүсгэх → сургах → хадгалах
+- [ ] **S4-T7** — `auto_trainer.py`: runtime auto-training trigger  `# 1.5 days`
+  - File: `a2a/projection/auto_trainer.py`
+  - **AC:** Model pair auto-discovery → read corpus → generate pairs → train → save
 
-- [ ] **S4-T8** — `ProjectionRegistry`: model cache + load/save  `# 0.5 өдөр`
-  - Файл: `a2a/projection/registry.py`
+- [ ] **S4-T8** — `ProjectionRegistry`: model cache + load/save  `# 0.5 day`
+  - File: `a2a/projection/registry.py`
   - **AC:** `get(src, tgt)` → cached model, `load(path)` → safetensors
 
-- [ ] **S4-T9** — PluginManager-д projection integration (route үед auto-resolve)  `# 1 өдөр`
-  - **AC:** `route_tensor()` → target өөр бол projection resolve → forward → илгээх
+- [ ] **S4-T9** — PluginManager projection integration (auto-resolve on route)  `# 1 day`
+  - **AC:** `route_tensor()` → different target model → resolve projection → forward → send
 
-- [ ] **S4-T10** — gRPC service-д `RequestProjection` RPC бөглөх  `# 0.5 өдөр`
-  - **AC:** Сервер projection хүсэлт хүлээж авах, auto_train trigger хийх
+- [ ] **S4-T10** — gRPC service: `RequestProjection` RPC implementation  `# 0.5 day`
+  - **AC:** Server accepts projection request, triggers auto_train
 
-- [ ] **S4-T11** — E2E integration: Llama-8B → Mistral-7B cross-model flow  `# 2 өдөр`
-  - **AC:** Llama дээрх LogReader → Mistral дээрх CodeFixer, projection auto-surgach
+- [ ] **S4-T11** — E2E integration: Llama-8B → Mistral-7B cross-model flow  `# 2 days`
+  - **AC:** Llama LogReader → Mistral CodeFixer, projection auto-trained
 
-### S4 Тестүүд (15)
+### S4 Tests (15)
 
 - [ ] ProjectionModel forward produces correct shape
 - [ ] ProjectionModel forward preserves batch dim
@@ -409,55 +409,55 @@ a2a/
 
 ---
 
-## Sprint 5 — Security, Rate Limit, Monitoring
+## Sprint 5 — Security, Rate Limiting, Monitoring
 
-**Хугацаа:** 3 долоо хоног (15 өдөр)
-**Зорилго:** Үйлдвэрлэлд бэлэн — mTLS, JWT auth, rate limiting, Prometheus, structured logging
+**Duration:** 3 weeks (15 days)
+**Goal:** Production-ready — mTLS, JWT auth, rate limiting, Prometheus, structured logging
 
 ### Tasks
 
-- [ ] **S5-T1** — mTLS: server-side SSL credentials + gRPC server залгах  `# 1 өдөр`
-  - Файл: `a2a/security/tls.py`
-  - **AC:** Сервер зөвхөн valid client cert-тэй холболт хүлээж авна
+- [ ] **S5-T1** — mTLS: server-side SSL credentials + gRPC server integration  `# 1 day`
+  - File: `a2a/security/tls.py`
+  - **AC:** Server only accepts connections with valid client cert
 
-- [ ] **S5-T2** — mTLS: client-side SSL credentials  `# 1 өдөр`
-  - **AC:** Клиент valid cert, key, ca-тай серверт холбогдоно
+- [ ] **S5-T2** — mTLS: client-side SSL credentials  `# 1 day`
+  - **AC:** Client connects with valid cert, key, ca
 
-- [ ] **S5-T3** — JWT auth: token create + validate  `# 0.5 өдөр`
-  - Файл: `a2a/security/auth.py`
+- [ ] **S5-T3** — JWT auth: token create + validate  `# 0.5 day`
+  - File: `a2a/security/auth.py`
   - **AC:** `create_token(agent_id, mesh_id, secret)` → JWT, `validate_token(token)` → payload
 
-- [ ] **S5-T4** — JWT: gRPC client metadata-д token attach  `# 0.5 өдөр`
-  - **AC:** gRPC call бүрд metadata header-т JWT token очно
+- [ ] **S5-T4** — JWT: gRPC client metadata token attach  `# 0.5 day`
+  - **AC:** Every gRPC call carries JWT in metadata header
 
-- [ ] **S5-T5** — JWT: gRPC server interceptor → token validate  `# 1 өдөр`
-  - **AC:** Token хүчингүй бол PERMISSION_DENIED error буцаана
+- [ ] **S5-T5** — JWT: gRPC server interceptor → token validation  `# 1 day`
+  - **AC:** Invalid token → PERMISSION_DENIED error
 
-- [ ] **S5-T6** — TokenBucket rate limiter  `# 1 өдөр`
-  - Файл: `a2a/monitoring/rate_limiter.py`
-  - **AC:** `allow(agent_id)` → bucket-д token байвал True, үгүй бол False
+- [ ] **S5-T6** — TokenBucket rate limiter  `# 1 day`
+  - File: `a2a/monitoring/rate_limiter.py`
+  - **AC:** `allow(agent_id)` → True if token available, False otherwise
 
-- [ ] **S5-T7** — Rate limiter: per-agent + per-route, gRPC interceptor  `# 1 өдөр`
-  - **AC:** Agent ID + semantic label-аар check, хэтэрвэл RESOURCE_EXHAUSTED
+- [ ] **S5-T7** — Rate limiter: per-agent + per-route, gRPC interceptor  `# 1 day`
+  - **AC:** Checked by agent ID + semantic label, exceeded → RESOURCE_EXHAUSTED
 
-- [ ] **S5-T8** — Backpressure / Flow control: `MSG_BACKPRESSURE` + логик  `# 1.5 өдөр`
-  - **AC:** Queue depth>threshold → SLOW_DOWN дохио, queue хоосорвол RESUME
+- [ ] **S5-T8** — Backpressure / Flow control: `MSG_BACKPRESSURE` + logic  `# 1.5 days`
+  - **AC:** Queue depth > threshold → SLOW_DOWN signal, empty → RESUME
 
-- [ ] **S5-T9** — Prometheus metrics: counters, histograms, gauges  `# 1 өдөр`
-  - Файл: `a2a/monitoring/metrics.py`
-  - **AC:** `/metrics` endpoint → Prometheus scrape боломжтой
+- [ ] **S5-T9** — Prometheus metrics: counters, histograms, gauges  `# 1 day`
+  - File: `a2a/monitoring/metrics.py`
+  - **AC:** `/metrics` endpoint → Prometheus scrapeable
 
-- [ ] **S5-T10** — Structured JSON logging  `# 0.5 өдөр`
-  - Файл: `a2a/utils/logging.py`
+- [ ] **S5-T10** — Structured JSON logging  `# 0.5 day`
+  - File: `a2a/utils/logging.py`
   - **AC:** timestamp + level + event + extra fields → JSON line
 
-- [ ] **S5-T11** — Health check endpoint: `/health`, `/health/ready`, `/health/live`  `# 0.5 өдөр`
+- [ ] **S5-T11** — Health endpoints: `/health`, `/health/ready`, `/health/live`  `# 0.5 day`
   - **AC:** GET /health → `{"status":"ok","plugins_loaded":2,"uptime":3600}`
 
-- [ ] **S5-T12** — Security + rate limit integration test  `# 1 өдөр`
-  - **AC:** mTLS + JWT + rate limit бүгд зэрэг ажиллах
+- [ ] **S5-T12** — Security + rate limit integration test  `# 1 day`
+  - **AC:** mTLS + JWT + rate limit all working simultaneously
 
-### S5 Тестүүд (15)
+### S5 Tests (15)
 
 - [ ] TokenBucket consumes token correctly
 - [ ] TokenBucket refills over time
@@ -479,24 +479,24 @@ a2a/
 
 ## Sprint 6 — Documentation, Integration, Release
 
-**Хугацаа:** 2 долоо хоног (10 өдөр)
-**Зорилго:** PyPI package + Docker image + бүрэн documentation + demo
+**Duration:** 2 weeks (10 days)
+**Goal:** PyPI package + Docker image + full documentation + demo
 
 ### Tasks
 
-- [ ] **S6-T1** — `docs/index.md` — Overview, Quickstart (5 минутанд ажиллуулах)  `# 0.5 өдөр`
-- [ ] **S6-T2** — `docs/architecture.md` — Архитектурын дэлгэрэнгүй  `# 0.5 өдөр`
-- [ ] **S6-T3** — `docs/protocol.md` — Wire protocol specification  `# 1 өдөр`
-- [ ] **S6-T4** — `docs/plugins.md` — Plugin хөгжүүлэх гарын авлага  `# 1 өдөр`
-- [ ] **S6-T5** — `docs/config.md` — `a2a.yaml` бүрэн reference  `# 1 өдөр`
-- [ ] **S6-T6** — `docs/deployment.md` — Docker + K8s deployment  `# 0.5 өдөр`
-- [ ] **S6-T7** — `docs/api/` — API reference (auto-generated)  `# 1 өдөр`
-- [ ] **S6-T8** — Demo: `examples/basic_mesh/` (2 plugin)  `# 1 өдөр`
-- [ ] **S6-T9** — Demo: `examples/multi_model/` (3 plugin, 2 модель)  `# 1.5 өдөр`
-- [ ] **S6-T10** — PyPI release: build + twine upload  `# 0.5 өдөр`
-- [ ] **S6-T11** — Docker image: multi-stage build, push to ghcr  `# 0.5 өдөр`
+- [ ] **S6-T1** — `docs/index.md` — Overview, Quickstart (5 min setup)  `# 0.5 day`
+- [ ] **S6-T2** — `docs/architecture.md` — Detailed architecture  `# 0.5 day`
+- [ ] **S6-T3** — `docs/protocol.md` — Wire protocol specification  `# 1 day`
+- [ ] **S6-T4** — `docs/plugins.md` — Plugin development guide  `# 1 day`
+- [ ] **S6-T5** — `docs/config.md` — Full `a2a.yaml` reference  `# 1 day`
+- [ ] **S6-T6** — `docs/deployment.md` — Docker + K8s deployment  `# 0.5 day`
+- [ ] **S6-T7** — `docs/api/` — API reference (auto-generated)  `# 1 day`
+- [ ] **S6-T8** — Demo: `examples/basic_mesh/` (2 plugins)  `# 1 day`
+- [ ] **S6-T9** — Demo: `examples/multi_model/` (3 plugins, 2 models)  `# 1.5 days`
+- [ ] **S6-T10** — PyPI release: build + twine upload  `# 0.5 day`
+- [ ] **S6-T11** — Docker image: multi-stage build, push to ghcr  `# 0.5 day`
 
-### S6 Тестүүд (5)
+### S6 Tests (5)
 
 - [ ] `examples/basic_mesh/start.sh` runs without error
 - [ ] Basic mesh: log → code fix pipeline
@@ -506,57 +506,57 @@ a2a/
 
 ---
 
-## Sprint 7+ — Go Transport Layer (2-р үе)
+## Sprint 7+ — Go Transport Layer (Phase 2)
 
-**Хугацаа:** Төлөвлөгөөгүй (Python SDK тогтворжсоны дараа)
+**Duration:** TBD (after Python SDK stabilizes)
 
-- [ ] Go модуль үүсгэх (`go.mod`, `go.sum`) — `a2a-transport` нэртэй
-- [ ] FlatBuffers Go кодогенерац (`.fbs` schema → Go structs)
-- [ ] gRPC/QUIC сервер Go дээр (Python ML Core-той unix socket-ээр харилцана)
-- [ ] gRPC/QUIC клиент Go дээр (өндөр concurrency)
+- [ ] Go module setup (`go.mod`, `go.sum`) — named `a2a-transport`
+- [ ] FlatBuffers Go codegen (`.fbs` schema → Go structs)
+- [ ] gRPC/QUIC server in Go (communicates with Python ML Core via unix socket)
+- [ ] gRPC/QUIC client in Go (high concurrency)
 - [ ] Go ↔ Python integration test
 - [ ] Benchmark: Go transport vs Python transport
 
 ---
 
-## MVP Тодорхойлолт
+## MVP Definition
 
-**MVP = Sprint 0 → Sprint 3 (12 долоо хоног)**
+**MVP = Sprint 0 → Sprint 3 (12 weeks)**
 
-| # | Шаардлага | Sprint |
+| # | Requirement | Sprint |
 |---|---|---|
-| 1 | Нэг загварын гэр бүл доторх A2A (Llama ↔ Llama) | S2+ |
-| 2 | gRPC + FlatBuffers тээвэрлэлт | S1 |
-| 3 | Hidden state extraction (сүүлийн давхарга) + Prefix injection | S2 |
-| 4 | Plugin Manager + 2 plugin (LogReader, CodeFixer) | S3 |
-| 5 | Log → Code fix demo ажиллах | S3 |
+| 1 | Single model family A2A (Llama ↔ Llama) | S2+ |
+| 2 | gRPC + FlatBuffers transport | S1 |
+| 3 | Hidden state extraction (last layer) + Prefix injection | S2 |
+| 4 | Plugin Manager + 2 plugins (LogReader, CodeFixer) | S3 |
+| 5 | Log → Code fix demo working | S3 |
 | 6 | Text API vs A2A benchmark | S3 |
 
-**v1.0 = Sprint 0 → Sprint 6 (22 долоо хоног)**
+**v1.0 = Sprint 0 → Sprint 6 (22 weeks)**
 
-- MVP + Projection Model (heterogeneous дэмжлэг) + Auto-training + Security + Release
+- MVP + Projection Model (heterogeneous support) + Auto-training + Security + Release
 
 ---
 
-## Өдрийн Хураангуй
+## Summary by Sprint
 
-| Sprint | Долоо хоног | Өдөр | Даалгавар | Төлөв |
+| Sprint | Weeks | Days | Tasks | Status |
 |---|---|---|---|---|
-| S0 | 1-2 | 10 | Project setup, CI/CD, scaffolding | 🔄 In Progress |
-| S1 | 3-5 | 15 | Wire protocol + Transport layer | ⬜ Pending |
-| S2 | 6-9 | 20 | Tensor Engine | ⬜ Pending |
-| S3 | 10-13 | 20 | Plugin System + Core Runtime | ⬜ Pending |
-| S4 | 14-17 | 20 | Projection Model + Auto-training | ⬜ Pending |
-| S5 | 18-20 | 15 | Security, Rate Limit, Monitoring | ⬜ Pending |
-| S6 | 21-22 | 10 | Docs, Integration, Release | ⬜ Pending |
-| S7+ | — | — | Go Transport Layer | ⬜ Pending |
-| **Нийт** | **22** | **110** | **72 tasks** | |
+| S0 | 1–2 | 10 | 7 | 🔄 In Progress |
+| S1 | 3–5 | 15 | 10 | ⬜ Pending |
+| S2 | 6–9 | 20 | 8 | ⬜ Pending |
+| S3 | 10–13 | 20 | 13 | ⬜ Pending |
+| S4 | 14–17 | 20 | 11 | ⬜ Pending |
+| S5 | 18–20 | 15 | 12 | ⬜ Pending |
+| S6 | 21–22 | 10 | 11 | ⬜ Pending |
+| S7+ | — | — | 6 | ⬜ Pending |
+| **Total** | **22** | **110** | **78** | |
 
 ---
 
-## Файлын Хурдан Лавлах
+## File Quick Reference
 
-| Файл | Sprint | Task |
+| File | Sprint | Task |
 |---|---|---|
 | `pyproject.toml` | S0 | S0-T1 |
 | `.github/workflows/ci.yml` | S0 | S0-T2 |
@@ -598,4 +598,4 @@ a2a/
 
 ---
 
-> **Сүүлийн шинэчлэл:** 2026-07-15
+> **Last updated:** 2026-07-15

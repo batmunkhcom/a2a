@@ -24,10 +24,25 @@ env/
 *.swo
 *~
 
-# Environment variables
+# Environment & secrets
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+*.jwt
+*.jwk
+credentials.*
+*secret*
+*token*
+service-account*.json
+secrets.yaml
+secrets.yml
+*.secrets.*
 
 # Models & large files
 *.safetensors
