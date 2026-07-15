@@ -16,7 +16,7 @@ jobs:
           python-version: "3.11"
       - run: pip install ruff mypy
       - run: ruff check a2a/ tests/
-      - run: mypy a2a/ --ignore-missing-imports
+      - run: mypy a2a/
 
   test:
     needs: lint
