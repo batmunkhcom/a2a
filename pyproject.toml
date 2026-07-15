@@ -46,6 +46,7 @@ dev = [
     "mypy>=1.8",
     "pre-commit>=3.5",
     "grpcio-tools>=1.60",
+    "numpy>=1.24",
 ]
 
 ml = [
@@ -82,7 +83,7 @@ select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
 "a2a/projection/trainer.py" = ["N812"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 strict = true
 warn_unused_ignores = true
 exclude = ["a2a/protocol/generated"]
@@ -116,11 +117,7 @@ module = "a2a.protocol.messages"
 ignore_errors = true
 
 [[tool.mypy.overrides]]
-module = "a2a.transport.server"
-ignore_errors = true
-
-[[tool.mypy.overrides]]
-module = "a2a.transport.client"
+module = "a2a.transport.*"
 ignore_errors = true
 
 [tool.pytest.ini_options]
