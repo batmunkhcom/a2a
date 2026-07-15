@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        args: [--strict, --ignore-missing-imports]
+        exclude: ".*_pb2.*\\.py$"
+        additional_dependencies:
+          - pydantic>=2.5
+          - typer>=0.9
+          - torch>=2.1

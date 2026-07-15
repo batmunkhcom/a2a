@@ -1,0 +1,5 @@
+# Log Reader Plugin Configuration
+max_log_lines: 5000
+include_stacktrace: true
+filter_levels: ["ERROR", "FATAL", "WARN"]
+context_lines: 10

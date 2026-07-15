@@ -637,7 +637,7 @@ GET /metrics          → Prometheus scrape endpoint
 
 | Sprint | Weeks | Focus | Status |
 |---|---|---|---|
-| **S0** | 1–2 | Project setup, CI/CD, scaffolding | 🔴 Not started |
+| **S0** | 1–2 | Project setup, CI/CD, scaffolding | 🔄 In progress |
 | **S1** | 3–5 | Wire protocol + Transport layer (gRPC) | ⬜ |
 | **S2** | 6–9 | Tensor Engine (extract/inject/serialize) | ⬜ |
 | **S3** | 10–13 | Plugin System + Core Runtime | ⬜ |
@@ -646,9 +646,15 @@ GET /metrics          → Prometheus scrape endpoint
 | **S6** | 21–22 | Docs, Integration, PyPI Release | ⬜ |
 | **S7+** | — | Go Transport Layer (hybrid architecture) | ⬜ |
 
+## About
+
+A2A Protocol is developed with [**mBm AI Assistant**](https://console.mbm.mn) — an AI-powered engineering and operations assistant by [mBm TECHNOLOGY LLC](https://www.mbm.technology) that handles rapid coding, server management, deployments, and full-stack troubleshooting.
+
+> **Try it at:** [console.mbm.mn](https://console.mbm.mn)
+
 ## Contributing
 
-A2A Protocol is developed by [mBm TECHNOLOGY LLC](https://www.mbm.technology). Contributions are welcome — please open an issue before submitting a PR to discuss the proposed change.
+Contributions are welcome — please open an issue before submitting a PR to discuss the proposed change.
 
 Internal planning documents are maintained in `docs/` (gitignored). For the full architectural plan and sprint breakdown, contact the maintainers.
 
@@ -664,5 +670,5 @@ Licensed under the Apache License, Version 2.0
 ---
 
 <div align="center">
-  <sub>Developed by <a href="https://www.mbm.technology">mBm TECHNOLOGY LLC</a></sub>
+  <sub>Developed with <a href="https://console.mbm.mn">mBm AI Assistant</a> by <a href="https://www.mbm.technology">mBm TECHNOLOGY LLC</a></sub>
 </div>

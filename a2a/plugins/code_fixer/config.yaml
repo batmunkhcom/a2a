@@ -1,0 +1,5 @@
+# Code Fixer Plugin Configuration
+max_output_tokens: 1024
+languages: ["python", "go", "typescript", "rust"]
+auto_format: true
+temperature: 0.2
