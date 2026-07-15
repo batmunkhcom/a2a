@@ -7,7 +7,7 @@
   <p>
     <a href="https://github.com/batmunkhcom/a2a/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
     <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python" alt="Python"></a>
-    <img src="https://img.shields.io/badge/Status-Pre--alpha-red" alt="Status">
+    <img src="https://img.shields.io/badge/Status-Alpha-yellow" alt="Status">
     <img src="https://img.shields.io/badge/Version-0.1.0.dev0-lightgrey" alt="Version">
   </p>
 </div>
@@ -637,14 +637,15 @@ GET /metrics          → Prometheus scrape endpoint
 
 | Sprint | Weeks | Focus | Status |
 |---|---|---|---|
-| **S0** | 1–2 | Project setup, CI/CD, scaffolding | 🔄 In progress |
-| **S1** | 3–5 | Wire protocol + Transport layer (gRPC) | ⬜ |
-| **S2** | 6–9 | Tensor Engine (extract/inject/serialize) | ⬜ |
-| **S3** | 10–13 | Plugin System + Core Runtime | ⬜ |
-| **S4** | 14–17 | Projection Model + Auto-training | ⬜ |
-| **S5** | 18–20 | Security, Rate Limiting, Monitoring | ⬜ |
-| **S6** | 21–22 | Docs, Integration, PyPI Release | ⬜ |
-| **S7+** | — | Go Transport Layer (hybrid architecture) | ⬜ |
+| **S0** | 1–2 | Project setup, CI/CD, scaffolding | ✅ Complete |
+| **S1** | 3–5 | Wire protocol + Transport layer (gRPC) | ✅ Complete |
+| **S2** | 6–9 | Tensor Engine (extract/inject/serialize) | ✅ Complete |
+| **S3** | 10–13 | Plugin System + Core Runtime | ✅ Complete |
+| **S4** | 14–17 | Projection Model + Auto-training | ✅ Complete |
+| **S5** | 18–20 | Security, Rate Limiting, Monitoring | ✅ Complete |
+| **S6** | 21–22 | Docs, Integration, PyPI Release | ✅ Complete |
+| **S7+** | — | Go Transport Layer (hybrid architecture) | ⬜ Future |
+> **120 tests passing** | ruff+mypy clean | Apache 2.0 Licensed
 
 ## About
 

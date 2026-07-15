@@ -542,13 +542,13 @@ a2a/
 
 | Sprint | Weeks | Days | Tasks | Status |
 |---|---|---|---|---|
-| S0 | 1–2 | 10 | 7 | 🔄 In Progress |
-| S1 | 3–5 | 15 | 10 | ⬜ Pending |
-| S2 | 6–9 | 20 | 8 | ⬜ Pending |
-| S3 | 10–13 | 20 | 13 | ⬜ Pending |
-| S4 | 14–17 | 20 | 11 | ⬜ Pending |
-| S5 | 18–20 | 15 | 12 | ⬜ Pending |
-| S6 | 21–22 | 10 | 11 | ⬜ Pending |
+| S0 | 1–2 | 10 | 7 | ✅ Complete |
+| S1 | 3–5 | 15 | 10 | ✅ Complete |
+| S2 | 6–9 | 20 | 8 | ✅ Complete |
+| S3 | 10–13 | 20 | 13 | ✅ Complete |
+| S4 | 14–17 | 20 | 11 | ✅ Complete |
+| S5 | 18–20 | 15 | 12 | ✅ Complete |
+| S6 | 21–22 | 10 | 11 | ✅ Complete |
 | S7+ | — | — | 6 | ⬜ Pending |
 | **Total** | **22** | **110** | **78** | |
 
