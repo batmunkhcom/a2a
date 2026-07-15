@@ -85,6 +85,10 @@ warn_unused_ignores = true
 exclude = ["a2a/protocol/generated"]
 
 [[tool.mypy.overrides]]
+module = "a2a.tensor.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
 module = "a2a.protocol.generated.*"
 ignore_errors = true
 
