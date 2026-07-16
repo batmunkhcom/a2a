@@ -517,6 +517,10 @@ a2a/
 - [x] Python ML Core Unix socket bridge server (BridgeServer)
 - [x] Go ↔ Python integration test (9 tests, wire protocol validated)
 - [x] Benchmark: Go codec (10.5µs encode, 11.9µs decode on Intel N150)
+- [x] Go CI/CD in GitHub Actions (go-lint → go-test 1.23/1.24 → go-bench)
+- [x] Auto-versioning with setuptools-scm (git tags → version, importlib.metadata fallback)
+- [x] v0.1.0 PyPI release + git tag v0.1.0
+- [x] CI fix: numpy added to mypy lint job for bridge_server
 
 ---
 
@@ -550,8 +554,8 @@ a2a/
 | S4 | 14–17 | 20 | 11 | ✅ Complete |
 | S5 | 18–20 | 15 | 12 | ✅ Complete |
 | S6 | 21–22 | 10 | 11 | ✅ Complete |
-| S7+ | — | — | 7 | ✅ Complete |
-| **Total** | **22** | **110** | **79** | |
+| S7+ | — | — | 11 | ✅ Complete |
+| **Total** | **22** | **110** | **83** | |
 
 ---
 
@@ -560,7 +564,8 @@ a2a/
 | File | Sprint | Task |
 |---|---|---|
 | `pyproject.toml` | S0 | S0-T1 |
-| `.github/workflows/ci.yml` | S0 | S0-T2 |
+| `a2a/__init__.py` | S0/S7 | S0-T4, auto-versioning |
+| `.github/workflows/ci.yml` | S0/S7 | S0-T2, Go CI/CD |
 | `.pre-commit-config.yaml` | S0 | S0-T3 |
 | `a2a/__init__.py`, `a2a/_version.py` | S0 | S0-T4 |
 | `a2a/cli.py` | S0 | S0-T5 |
@@ -605,4 +610,4 @@ a2a/
 
 ---
 
-> **Last updated:** 2026-07-15
+> **Last updated:** 2026-07-16
