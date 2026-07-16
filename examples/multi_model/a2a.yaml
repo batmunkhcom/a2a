@@ -1,38 +1,56 @@
-version: "0.1"
-mesh_id: "multi-model-mesh"
+# Multi-Model Mesh — 3-plugin demo with cross-model projection
+version: "1.0"
+
+runtime:
+  agent_id: "multi-model-mesh"
 
 models:
   model-a:
-    name: "source-model"
-    family: "llama"
-    dtype: "fp32"
-    hidden_dim: 768
+    provider: "huggingface"
+    model_id: "source-model"
+    device: "cpu"
+    dtype: "float32"
   model-b:
-    name: "target-model"
-    family: "mistral"
-    dtype: "fp32"
-    hidden_dim: 1024
-    projection:
-      variant: "b"
-      hidden_size: 512
+    provider: "huggingface"
+    model_id: "target-model"
+    device: "cpu"
+    dtype: "float32"
+
+transport:
+  protocol: "grpc"
+  host: "0.0.0.0"
+  port: 9090
+
+projection:
+  auto_train:
+    enabled: false
+  architecture:
+    variant: "b"
+    hidden_dim: 512
+    dropout: 0.1
 
 plugins:
   summarizer:
-    module: plugins.summarizer
-    agent_id: summarizer
-    model: model-a
+    enabled: true
+    module: "plugins.summarizer"
+    class_name: "SummarizerPlugin"
+    model: "model-a"
+    priority: 10
   normalizer:
-    module: plugins.normalizer
-    agent_id: normalizer
-    model: model-b
+    enabled: true
+    module: "plugins.normalizer"
+    class_name: "NormalizerPlugin"
+    model: "model-b"
+    priority: 10
   mixer:
-    module: plugins.mixer
-    agent_id: mixer
-    model: model-b
+    enabled: true
+    module: "plugins.mixer"
+    class_name: "MixerPlugin"
+    model: "model-b"
+    priority: 10
 
 routes:
-  - from: {agent_id: summarizer, label: hidden_state}
-    to: {agent_id: normalizer, label: hidden_state}
-    projection: true
-  - from: {agent_id: normalizer, label: hidden_state}
-    to: {agent_id: mixer, label: hidden_state}
+  hidden_state:
+    - "normalizer"
+  mixed_state:
+    - "mixer"

@@ -1,23 +1,35 @@
-version: "0.1"
-mesh_id: "basic-mesh"
+# Basic Mesh — 2-plugin A2A demo (repeater + inverter)
+version: "1.0"
+
+runtime:
+  agent_id: "basic-mesh"
 
 models:
   base:
-    name: "demo-model"
-    family: "demo"
-    dtype: "fp32"
-    hidden_dim: 768
+    provider: "huggingface"
+    model_id: "demo-model"
+    device: "cpu"
+    dtype: "float32"
+
+transport:
+  protocol: "grpc"
+  host: "0.0.0.0"
+  port: 9090
 
 plugins:
   repeater:
-    module: plugins.repeater
-    agent_id: repeater
-    model: base
+    enabled: true
+    module: "plugins.repeater"
+    class_name: "RepeaterPlugin"
+    model: "base"
+    priority: 10
   inverter:
-    module: plugins.inverter
-    agent_id: inverter
-    model: base
+    enabled: true
+    module: "plugins.inverter"
+    class_name: "InverterPlugin"
+    model: "base"
+    priority: 10
 
 routes:
-  - from: {agent_id: repeater, label: hidden_state}
-    to: {agent_id: inverter, label: hidden_state}
+  hidden_state:
+    - "inverter"
