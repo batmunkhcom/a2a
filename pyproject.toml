@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=68.0", "wheel"]
+requires = ["setuptools>=68.0", "wheel", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "batmunkh-a2a"
-version = "0.1.0"
+dynamic = ["version"]
 description = "A2A Protocol — AI-to-AI Latent Space Communication Protocol"
 readme = "README.md"
 license = {text = "Apache-2.0"}
@@ -47,6 +47,7 @@ dev = [
     "pre-commit>=3.5",
     "grpcio-tools>=1.60",
     "numpy>=1.24",
+    "setuptools-scm>=8.0",
 ]
 
 ml = [
@@ -60,6 +61,11 @@ a2a = "a2a.cli:app"
 
 [tool.setuptools.packages.find]
 include = ["a2a*"]
+
+[tool.setuptools_scm]
+write_to = "a2a/_version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
 
 [tool.ruff]
 target-version = "py311"

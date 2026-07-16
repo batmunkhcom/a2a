@@ -11,7 +11,8 @@ eggs/
 .eggs/
 pip-wheel-metadata/
 
-# Virtual environments
+# setuptools-scm auto-generated
+a2a/_version.py
 .venv/
 venv/
 env/
